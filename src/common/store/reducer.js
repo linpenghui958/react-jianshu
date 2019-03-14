@@ -1,16 +1,16 @@
+import * as actionTypes from './actionTypes'
+
 const defaultState = {
   onFocus: false
 }
 
 export default (state = defaultState, action) => {
-  if (action.type === 'search_focus') {
-    console.log('search_focus')
+  if (action.type === actionTypes.SEARCH_FOCUS) {
     return {
       onFocus: true
     }
   }
-  if (action.type === 'search_blur') {
-    console.log('search_blur')
+  if (action.type === actionTypes.SEARCH_BLUR) {
     return {
       onFocus: false
     }
