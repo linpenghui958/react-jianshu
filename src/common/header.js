@@ -22,6 +22,31 @@ import {
 
 class Header extends Component{
 
+  getListArea() {
+    const { onFocus, list } = this.props
+    if (onFocus) {
+      return (
+        <SearchInfo 
+				>
+					<SearchInfoTitle>
+						热门搜索
+						<SearchInfoSwitch >
+							<i className="iconfont spin">&#xe851;</i>
+							换一批
+						</SearchInfoSwitch>
+					</SearchInfoTitle>
+					<SearchInfoList>
+            {list.map((item, index) => {
+              return <SearchInfoItem key={index}>{item}</SearchInfoItem>
+            })}
+					</SearchInfoList>
+				</SearchInfo>
+      )
+    } else {
+      return null
+    }
+  }
+
   render() {
     const { onFocus, handleInputFocus, handleInputBlur} = this.props
     return (
@@ -44,6 +69,7 @@ class Header extends Component{
                 ></NavSearch>
               </CSSTransition>
               <i className = {onFocus ? 'iconfont zoom focused': 'iconfont zoom'}>&#xe614;</i>
+              {this.getListArea()}
             </SearchWrapper>
           </Nav>
           <Addition>
@@ -60,13 +86,15 @@ class Header extends Component{
 }
 const mapStateToProps = (state) => {
   return {
-    onFocus: state.getIn(['header', 'onFocus'])
+    onFocus: state.getIn(['header', 'onFocus']),
+    list: state.getIn(['header', 'list'])
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     handleInputFocus() {
+      dispatch(actionsCreators.getList())
       dispatch(actionsCreators.searchFocus())
     },
     handleInputBlur() {
