@@ -60,7 +60,7 @@ class Header extends Component{
 }
 const mapStateToProps = (state) => {
   return {
-    onFocus: state.header.onFocus
+    onFocus: state.getIn(['header', 'onFocus'])
   }
 }
 
