@@ -23,22 +23,33 @@ import {
 class Header extends Component{
 
   getListArea() {
-    const { onFocus, list } = this.props
-    if (onFocus) {
+    const { onFocus, list, page, totalPage, mouseIn, handleMouseEnter, handleMouseLeave, handleChangePage } = this.props
+    const newList = list.toJS()
+    const pageList = []
+    if (newList.length) {
+      for (let i = (page - 1) * 10; i < page * 10; i++) {
+				pageList.push(
+					<SearchInfoItem key={newList[i]}>{newList[i]}</SearchInfoItem>
+				)
+			}
+    }
+    if (onFocus || mouseIn) {
       return (
         <SearchInfo 
+          onMouseEnter={handleMouseEnter}
+					onMouseLeave={handleMouseLeave}
 				>
 					<SearchInfoTitle>
 						热门搜索
-						<SearchInfoSwitch >
+						<SearchInfoSwitch 
+              onClick={ () => handleChangePage(page, totalPage)}
+              >
 							<i className="iconfont spin">&#xe851;</i>
 							换一批
 						</SearchInfoSwitch>
 					</SearchInfoTitle>
 					<SearchInfoList>
-            {list.map((item, index) => {
-              return <SearchInfoItem key={index}>{item}</SearchInfoItem>
-            })}
+            {pageList}
 					</SearchInfoList>
 				</SearchInfo>
       )
@@ -48,7 +59,7 @@ class Header extends Component{
   }
 
   render() {
-    const { onFocus, handleInputFocus, handleInputBlur} = this.props
+    const { onFocus, handleInputFocus, handleInputBlur, list} = this.props
     return (
       <div>
         <HeaderWrapper>
@@ -64,7 +75,7 @@ class Header extends Component{
               >
                 <NavSearch
                   className = {onFocus ? 'focused' : ''}
-                  onFocus = {handleInputFocus}
+                  onFocus = { () => handleInputFocus(list)}
                   onBlur = {handleInputBlur}
                 ></NavSearch>
               </CSSTransition>
@@ -87,19 +98,36 @@ class Header extends Component{
 const mapStateToProps = (state) => {
   return {
     onFocus: state.getIn(['header', 'onFocus']),
-    list: state.getIn(['header', 'list'])
+    list: state.getIn(['header', 'list']),
+		page: state.getIn(['header', 'page']),
+		totalPage: state.getIn(['header', 'totalPage']),
+		mouseIn: state.getIn(['header', 'mouseIn']),
+		login: state.getIn(['login', 'login'])
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleInputFocus() {
-      dispatch(actionsCreators.getList())
+    handleInputFocus(list) {
+      (list.size === 0) && dispatch(actionsCreators.getList())
       dispatch(actionsCreators.searchFocus())
     },
     handleInputBlur() {
       dispatch(actionsCreators.searchBlur())
-    }
+    },
+    handleMouseEnter() {
+			dispatch(actionsCreators.mouseEnter());
+		},
+		handleMouseLeave() {
+			dispatch(actionsCreators.mouseLeave());
+		},
+		handleChangePage(page, totalPage, spin) {
+			if (page < totalPage) {
+				dispatch(actionsCreators.changePage(page + 1));
+			}else {
+				dispatch(actionsCreators.changePage(1));
+			}
+		},
   }
 }
 
