@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { GlobalStyle } from './style';
 import { IconfontStyle } from './statics/iconfont/iconfont';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route} from 'react-router-dom'
 import store from './store'
 import Header from './common/header'
 
@@ -9,9 +10,17 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <IconfontStyle />
-        <GlobalStyle />
-        <Header />
+        <div>
+          <IconfontStyle />
+          <GlobalStyle />
+          <Header />
+          <Router>
+            <div>
+              <Route path='/' exact render={() => <div>home</div>}/>
+              <Route path='/detail' exact render={() => <div>detail</div>}/>
+            </div>
+          </Router>
+        </div>
       </Provider>
     );
   }
