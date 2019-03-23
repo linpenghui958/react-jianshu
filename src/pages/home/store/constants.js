@@ -1,2 +1,3 @@
 export const CHANGE_HOME_DATA = 'CHANGE_HOME_DATA'
 export const ADD_HOME_LIST = 'ADD_HOME_LIST'
+export const TOGGLE_SCROLL_TOP = 'home/TOGGLE_SCROLL_TOP'

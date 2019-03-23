@@ -24,11 +24,16 @@ export const getHomeInfo = () => {
   }
 }
 
-export const getMoreList = () => {
+export const getMoreList = (page) => {
   return (dispatch) => {
     axios.get('/api/homeList.json').then(res => {
       const result = res.data.data
-      dispatch(addHomeList(result))
+      dispatch(addHomeList(result, page+1))
     })
   }
 }
+
+export const toggleTopShow = (show) => ({
+  type: constants.TOGGLE_SCROLL_TOP,
+  show
+})
