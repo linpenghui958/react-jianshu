@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { ListItem, ListInfo, LoadMore } from '../style';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actionCreators from '../store/actionCreators'
 
-class List extends Component{
+class List extends PureComponent{
   render() {
     const { list, page, getMoreList } = this.props
     return (

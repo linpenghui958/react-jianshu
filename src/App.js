@@ -14,8 +14,8 @@ class App extends Component {
         <div>
           <IconfontStyle />
           <GlobalStyle />
-          <Header />
           <Router>
+            <Header />
             <div>
               <Route path='/' exact component={Home}/>
               <Route path='/detail' exact render={() => <div>detail</div>}/>
