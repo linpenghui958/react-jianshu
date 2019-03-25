@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { connect } from 'react-redux'
 import { actionsCreators } from './store'
+import { actionCreators as loginActionsCreators } from '../pages/login/store'
 import { Link } from 'react-router-dom'
 import {
   HeaderWrapper,
@@ -60,7 +61,7 @@ class Header extends Component{
   }
 
   render() {
-    const { onFocus, handleInputFocus, handleInputBlur, list} = this.props
+    const { onFocus, handleInputFocus, handleInputBlur, list, login, logout} = this.props
     return (
       <div>
         <HeaderWrapper>
@@ -70,6 +71,11 @@ class Header extends Component{
           <Nav>
             <NavItem className='left active'>首页</NavItem>
             <NavItem className='left'>下载APP</NavItem>
+            {
+              login ? 
+                <NavItem onClick={logout} className='right'>退出</NavItem> : 
+                <Link to='/login'><NavItem className='right'>登陆</NavItem></Link>
+            }
             <SearchWrapper>
               <CSSTransition
                 in={onFocus}
@@ -91,7 +97,7 @@ class Header extends Component{
               <i className="iconfont">&#xe615;</i>
               写文章
             </Button>
-            <Button className='reg'>注册</Button>
+            {/* <Button className='reg'>注册</Button> */}
           </Addition>
         </HeaderWrapper>
       </div>
@@ -138,7 +144,10 @@ const mapDispatchToProps = (dispatch) => {
 			}else {
 				dispatch(actionsCreators.changePage(1));
 			}
-		},
+    },
+    logout() {
+			dispatch(loginActionsCreators.logout())
+		}
   }
 }
 
